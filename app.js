@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const db = require('./util/database');
+const sequelize = require('./util/database');
 
 const app = express();
 
@@ -33,6 +33,14 @@ app.use('/',shopRoutes);
 app.use((req, res, next) => {
   res.status(404).render('404', { pageTitle: 'Page Not Found', path: '404' });
 });
+
+sequelize.sync()
+.then((result)=>{
+  console.log(result);
+})
+.catch((err) =>{
+  console.log(err);
+})
 
 app.listen(PORT,()=>{
   console.log(`Server is connected at http://localhost:${PORT}`)
